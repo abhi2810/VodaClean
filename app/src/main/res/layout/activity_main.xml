@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        android:gravity="center">
     <EditText
+        android:layout_marginTop="100dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:hint="Employee ID"
         android:textSize="30sp"
-        android:layout_marginTop="52dp"
         android:id="@+id/emp"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:gravity="center" />
     <EditText
+        android:layout_marginTop="30dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:textSize="30dp"
-        android:layout_marginTop="55dp"
         android:id="@+id/pass"
         android:inputType="textPassword"
         android:hint="Password"
-        android:gravity="center"
-        android:layout_below="@+id/emp"
-        android:layout_alignStart="@+id/emp" />
+        android:gravity="center" />
     <Button
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:text="@string/login"
         android:textSize="30dp"
-        android:layout_below="@+id/pass"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
         android:onClick="login"
         android:id="@+id/button" />
     <Button
@@ -38,8 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/sigup"
         android:textSize="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/button"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="30dp"
         android:onClick="signup"/>
-</RelativeLayout>
+    </LinearLayout>
+</ScrollView>

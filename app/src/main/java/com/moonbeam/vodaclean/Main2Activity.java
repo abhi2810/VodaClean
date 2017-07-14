@@ -114,6 +114,11 @@ public class Main2Activity extends AppCompatActivity {
                         loading.dismiss();
                         //Showing toast message of the response
                         Toast.makeText(Main2Activity.this, s , Toast.LENGTH_LONG).show();
+                        disc.setText("");
+                        city.setText("");
+                        loc.setText("");
+                        floor.setText("");
+                        imageView.setImageResource(0);
                     }
                 },
                 new Response.ErrorListener() {
