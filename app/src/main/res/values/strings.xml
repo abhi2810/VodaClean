@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">VodaClean</string>
     <string name="login">Login</string>
-    <string name="sigup">SigUp</string>
+    <string name="sigup">SignUp</string>
 </resources>

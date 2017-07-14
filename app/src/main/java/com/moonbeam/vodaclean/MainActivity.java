@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 if (!response.equals("0")) {
                     Intent i = new Intent(MainActivity.this, Main2Activity.class);
                     i.putExtra("ID", response + emp);
+                    ed1.setText("");
+                    ed2.setText("");
                     startActivity(i);
                 }else{
                     Toast.makeText(this, "Incorrect Employee ID or Password", Toast.LENGTH_SHORT).show();
