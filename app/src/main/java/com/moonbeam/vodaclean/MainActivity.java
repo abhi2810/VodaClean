@@ -2,6 +2,7 @@ package com.moonbeam.vodaclean;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         ed1=(EditText)findViewById(R.id.emp);
         ed2=(EditText)findViewById(R.id.pass);
     }
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "EmployeeID or Password can't be empty", Toast.LENGTH_SHORT).show();
             else{
                 String response = "0";
-                String wsite = "http://website?emp=" + emp + "&pass=" + pass;
+                String wsite = "http://vodacleanserver3893.000webhostapp.com/login.php?emp=" + emp + "&pass=" + pass;
                 URL url = new URL(wsite);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent i = new Intent(MainActivity.this, Main2Activity.class);
                     i.putExtra("ID", response + emp);
                     startActivity(i);
+                }else{
+                    Toast.makeText(this, "Incorrect Employee ID or Password", Toast.LENGTH_SHORT).show();
                 }
             }
         }else{

@@ -2,6 +2,7 @@ package com.moonbeam.vodaclean;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +32,8 @@ public class Signup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         ed1=(EditText)findViewById(R.id.empid);
         ed2=(EditText)findViewById(R.id.name);
         ed3=(EditText)findViewById(R.id.pass);
@@ -51,7 +54,7 @@ public class Signup extends AppCompatActivity {
                     pass = URLEncoder.encode(pass, "UTF-8");
                     name = URLEncoder.encode(name, "UTF-8");
                     String response = "0";
-                    String wsite = "http://wsite/signup.php?read=1&emp=" + emp;
+                    String wsite = "http://vodacleanserver3893.000webhostapp.com/signup.php?read=1&emp=" + emp;
                     URL url = new URL(wsite);
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("POST");
@@ -60,7 +63,7 @@ public class Signup extends AppCompatActivity {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     response = reader.readLine();
                     if (response.equals("0")) {
-                        web.loadUrl("http://wsite/signup.php?read=0&emp=" + emp + "&pass=" + pass);
+                        web.loadUrl("http://vodacleanserver3893.000webhostapp.com/signup.php?read=0&emp=" + emp + "&pass=" + pass);
                         Intent i = new Intent(Signup.this, MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(i);

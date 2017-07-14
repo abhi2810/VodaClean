@@ -36,12 +36,13 @@ public class Main2Activity extends AppCompatActivity {
     private EditText disc;
     private EditText city;
     private EditText loc;
+    private EditText floor;
 
     private Bitmap bitmap;
 
     private int PICK_IMAGE_REQUEST = 1;
 
-    private String UPLOAD_URL ="http://simplifiedcoding.16mb.com/VolleyUpload/upload.php";
+    private String UPLOAD_URL ="http://vodacleanserver3893.000webhostapp.com/picture.php";
 
     private String KEY_IMAGE = "image";
     private String KEY_DISC = "disc";
@@ -57,6 +58,7 @@ public class Main2Activity extends AppCompatActivity {
         disc = (EditText) findViewById(R.id.editText);
         city = (EditText) findViewById(R.id.editText1);
         loc = (EditText) findViewById(R.id.editText2);
+        floor=(EditText) findViewById(R.id.editText3);
 
         imageView  = (ImageView) findViewById(R.id.imageView);
 
@@ -131,7 +133,7 @@ public class Main2Activity extends AppCompatActivity {
 
                 //Getting Image Name
                 String dis = disc.getText().toString().trim();
-                String loca=city.getText().toString()+", "+loc.getText().toString().trim();
+                String loca=city.getText().toString()+", "+loc.getText().toString().trim()+", "+floor.getText().toString().trim();
                 //Creating parameters
                 Map<String,String> params = new Hashtable<String, String>();
 
