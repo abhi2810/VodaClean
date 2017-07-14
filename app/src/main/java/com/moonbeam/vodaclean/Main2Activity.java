@@ -141,7 +141,7 @@ public class Main2Activity extends AppCompatActivity {
                 params.put(KEY_IMAGE, image);
                 params.put(KEY_DISC, dis);
                 params.put(KEY_LOC,loca);
-                //returning parameters
+                //returning parameter
                 return params;
             }
         };
