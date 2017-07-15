@@ -24,6 +24,8 @@ import com.android.volley.toolbox.Volley;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -139,6 +141,10 @@ public class Main2Activity extends AppCompatActivity {
                 //Getting Image Name
                 String dis = disc.getText().toString().trim();
                 String loca=city.getText().toString()+", "+loc.getText().toString().trim()+", "+floor.getText().toString().trim();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                String t = sdf.format(new Date());
+                String time=""+t.substring(9,11)+"H"+t.substring(11,13)+"M, "+t.substring(6,8)+"/"+t.substring(4,6)+"/"+t.substring(0,4);
                 //Creating parameters
                 Map<String,String> params = new Hashtable<String, String>();
 
@@ -146,6 +152,7 @@ public class Main2Activity extends AppCompatActivity {
                 params.put(KEY_IMAGE, image);
                 params.put(KEY_DISC, dis);
                 params.put(KEY_LOC,loca);
+                params.put("date",time);
                 //returning parameter
                 return params;
             }
