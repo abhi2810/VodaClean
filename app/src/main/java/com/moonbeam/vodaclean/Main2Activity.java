@@ -1,11 +1,13 @@
 package com.moonbeam.vodaclean;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,8 +38,8 @@ import java.util.Hashtable;
 import java.util.Map;
 
 public class Main2Activity extends AppCompatActivity {
-    private Button buttonChoose;
-    private Button buttonUpload;
+    private FloatingActionButton buttonChoose;
+    private FloatingActionButton buttonUpload;
 
     private ImageView imageView;
 
@@ -59,9 +62,13 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        buttonChoose = (Button) findViewById(R.id.buttonChoose);
-        buttonUpload = (Button) findViewById(R.id.buttonUpload);
-
+        buttonChoose = (FloatingActionButton) findViewById(R.id.buttonChoose);
+        buttonUpload = (FloatingActionButton) findViewById(R.id.buttonUpload);
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
         disc = (EditText) findViewById(R.id.editText);
         city = (EditText) findViewById(R.id.editText1);
         loc = (EditText) findViewById(R.id.editText2);
@@ -79,6 +86,7 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 uploadImage();
+                disc.requestFocus();
             }
         });
     }

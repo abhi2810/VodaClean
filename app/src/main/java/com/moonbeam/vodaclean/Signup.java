@@ -1,5 +1,6 @@
 package com.moonbeam.vodaclean;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -44,6 +46,11 @@ public class Signup extends AppCompatActivity {
         ed3=(EditText)findViewById(R.id.pass);
         ed4=(EditText)findViewById(R.id.cpass);
         web=(WebView)findViewById(R.id.web);
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
     public void sign(View v) throws IOException {
         emp=ed1.getText().toString();

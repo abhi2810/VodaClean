@@ -8,12 +8,13 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:weightSum="1">
-    <Button
-        android:layout_width="match_parent"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonChoose"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose Image"
-        android:id="@+id/buttonChoose" />
-
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/cam" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -21,32 +22,49 @@
         android:layout_weight="1"
         android:id="@+id/imageView" />
 
-
+<android.support.design.widget.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <EditText
         android:id="@+id/editText"
         android:hint="Discription of Issue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+</android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/editText1"
         android:hint="Location(City)"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/editText2"
-        android:hint="Location(Street)"
+        android:hint="Location(Building)"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/editText3"
         android:hint="Location(Floor)"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <Button
-        android:layout_width="match_parent"
+</android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonUpload"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload"
-        android:id="@+id/buttonUpload" />
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/stat_sys_upload" />
 </LinearLayout>
 
 </ScrollView>
