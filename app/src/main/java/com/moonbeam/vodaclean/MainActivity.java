@@ -27,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
             if(emp.equals("")||pass.equals(""))
                 Toast.makeText(this, "EmployeeID or Password can't be empty", Toast.LENGTH_SHORT).show();
             else{
+                pass= URLEncoder.encode(pass);
+                emp=URLEncoder.encode(pass);
                 String response = "0";
                 String wsite = "http://vodacleanserver3893.000webhostapp.com/login.php?emp=" + emp + "&pass=" + pass;
                 URL url = new URL(wsite);
