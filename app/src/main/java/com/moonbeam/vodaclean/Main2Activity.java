@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class Main2Activity extends AppCompatActivity {
     private EditText city;
     private EditText loc;
     private EditText floor;
-
+    private MaterialBetterSpinner materialDesignSpinner;
     private Bitmap bitmap;
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -57,11 +59,16 @@ public class Main2Activity extends AppCompatActivity {
     private String KEY_IMAGE = "image";
     private String KEY_DISC = "disc";
     private String KEY_LOC="location";
+    String[] SPINNERLIST = {"Desk not clean:", "Washroom not clean:", "Pantry no clean:", "Carpet no clean:","Cafeteria not clean:","Dustbin not clean:"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
+        materialDesignSpinner = (MaterialBetterSpinner)
+                findViewById(R.id.android_material_design_spinner);
+        materialDesignSpinner.setAdapter(arrayAdapter);
         buttonChoose = (FloatingActionButton) findViewById(R.id.buttonChoose);
         buttonUpload = (FloatingActionButton) findViewById(R.id.buttonUpload);
         View view = this.getCurrentFocus();
@@ -133,6 +140,7 @@ public class Main2Activity extends AppCompatActivity {
                         city.setText("");
                         loc.setText("");
                         floor.setText("");
+                        materialDesignSpinner.setText("");
                         imageView.setImageResource(0);
                     }
                 },
@@ -152,7 +160,8 @@ public class Main2Activity extends AppCompatActivity {
                 String image = getStringImage(bitmap);
 
                 //Getting Image Name
-                String dis = disc.getText().toString().trim();
+                String topic=materialDesignSpinner.getText().toString();
+                String dis = topic+"\n"+disc.getText().toString().trim();
                 String loca=city.getText().toString()+", "+loc.getText().toString().trim()+", "+floor.getText().toString().trim();
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
