@@ -1,13 +1,16 @@
 package com.moonbeam.vodaclean;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -65,6 +68,7 @@ public class Signup extends AppCompatActivity {
                     emp = URLEncoder.encode(emp, "UTF-8");
                     pass = URLEncoder.encode(pass, "UTF-8");
                     name = URLEncoder.encode(name, "UTF-8");
+                    final ProgressDialog loading = ProgressDialog.show(this,"Signing Up...","Please wait...",false,false);
                     String response = "0";
                     String wsite = "http://vodacleanserver3893.000webhostapp.com/signup.php?read=1&emp=" + emp;
                     URL url = new URL(wsite);
@@ -76,6 +80,7 @@ public class Signup extends AppCompatActivity {
                     response = reader.readLine();
                     if (response.equals("0")) {
                         web.loadUrl("http://vodacleanserver3893.000webhostapp.com/signup.php?read=0&emp=" + emp + "&pass=" + pass);
+                        loading.dismiss();
                         Intent i = new Intent(Signup.this, MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(i);
@@ -112,8 +117,10 @@ public class Signup extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.item1:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setTitle("Created by-");
-                dialog.setMessage("\tLovely Singh\n\t11211636");
+                dialog.setTitle("Powered by-");
+                LayoutInflater factory = LayoutInflater.from(Signup.this);
+                final View view = factory.inflate(R.layout.dialog_main, null);
+
                 dialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -121,8 +128,8 @@ public class Signup extends AppCompatActivity {
                                 Toast.makeText(Signup.this,"Thanks",Toast.LENGTH_SHORT).show();
                             }
                         });
-                AlertDialog alertDialog = dialog.create();
-                alertDialog.show();
+                dialog.setView(view);
+                dialog.show();
                 break;
             case R.id.item2:
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

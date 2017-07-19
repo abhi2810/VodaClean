@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -64,6 +66,7 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
         materialDesignSpinner = (MaterialBetterSpinner)
@@ -92,7 +95,10 @@ public class Main2Activity extends AppCompatActivity {
         buttonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadImage();
+                if(disc.getText().toString().equals("")||city.getText().toString().equals("")||floor.getText().toString().equals("")||loc.getText().toString().equals("")||materialDesignSpinner.getText().toString().equals("")) {
+                    Toast.makeText(Main2Activity.this, "Fields Can't be empty!", Toast.LENGTH_SHORT).show();
+                }else
+                    uploadImage();
                 disc.requestFocus();
             }
         });
@@ -119,11 +125,20 @@ public class Main2Activity extends AppCompatActivity {
         }
     }
     public String getStringImage(Bitmap bmp){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
+        if(bmp!=null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            return encodedImage;
+        }else{
+            bmp= BitmapFactory.decodeResource(getResources(), R.drawable.noimage);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            return encodedImage;
+        }
     }
     private void uploadImage(){
         //Showing the progress dialog
@@ -199,8 +214,10 @@ public class Main2Activity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.item1:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setTitle("Created by-");
-                dialog.setMessage("\tLovely Singh\n\t11211636");
+                dialog.setTitle("Powered by-");
+                LayoutInflater factory = LayoutInflater.from(Main2Activity.this);
+                final View view = factory.inflate(R.layout.dialog_main, null);
+
                 dialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -208,8 +225,8 @@ public class Main2Activity extends AppCompatActivity {
                                 Toast.makeText(Main2Activity.this,"Thanks",Toast.LENGTH_SHORT).show();
                             }
                         });
-                AlertDialog alertDialog = dialog.create();
-                alertDialog.show();
+                dialog.setView(view);
+                dialog.show();
                 break;
             case R.id.item2:
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

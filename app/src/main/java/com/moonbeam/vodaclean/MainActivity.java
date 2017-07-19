@@ -1,6 +1,7 @@
 package com.moonbeam.vodaclean;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             if(emp.equals("")||pass.equals(""))
                 Toast.makeText(this, "EmployeeID or Password can't be empty", Toast.LENGTH_SHORT).show();
             else{
+                final ProgressDialog loading = ProgressDialog.show(this,"Logging in...","Please wait...",false,false);
                 pass= URLEncoder.encode(pass);
                 emp=URLEncoder.encode(pass);
                 String response = "0";
@@ -70,10 +73,12 @@ public class MainActivity extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 response = reader.readLine();
                 if (!response.equals("0")) {
+                    loading.dismiss();
                     Intent i = new Intent(MainActivity.this, Main2Activity.class);
                     i.putExtra("ID", response + emp);
                     ed1.setText("");
                     ed2.setText("");
+                    loading.dismiss();
                     startActivity(i);
                 }else{
                     Toast.makeText(this, "Incorrect Employee ID or Password", Toast.LENGTH_SHORT).show();
@@ -126,8 +131,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.item1:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setTitle("Created by-");
-                dialog.setMessage("\tLovely Singh\n\t11211636");
+                dialog.setTitle("Powered by-");
+                LayoutInflater factory = LayoutInflater.from(MainActivity.this);
+                final View view = factory.inflate(R.layout.dialog_main, null);
+
                 dialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -135,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this,"Thanks",Toast.LENGTH_SHORT).show();
                             }
                         });
-                AlertDialog alertDialog = dialog.create();
-                alertDialog.show();
+                dialog.setView(view);
+                dialog.show();
                 break;
             case R.id.item2:
                 finish();
