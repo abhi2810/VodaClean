@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     EditText ed1,ed2;
     String emp,pass;
     boolean doubleBackToExitPressedOnce=false;
+    TextView rpass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +54,16 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         ed1=(EditText)findViewById(R.id.emp);
         ed2=(EditText)findViewById(R.id.pass);
+        rpass=(TextView)findViewById(R.id.resetpass);
+        rpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(MainActivity.this,ResetPassword.class);
+                startActivity(i);
+            }
+        });
     }
-    public void login(View v) throws IOException {
+    public void login(View v) {
         emp=ed1.getText().toString();
         pass=ed2.getText().toString();
         if (isInternetAvailable()){
@@ -62,26 +72,34 @@ public class MainActivity extends AppCompatActivity {
             else{
                 final ProgressDialog loading = ProgressDialog.show(this,"Logging in...","Please wait...",false,false);
                 pass= URLEncoder.encode(pass);
-                emp=URLEncoder.encode(pass);
+                emp=URLEncoder.encode(emp);
                 String response = "0";
                 String wsite = "http://vodacleanserver3893.000webhostapp.com/login.php?emp=" + emp + "&pass=" + pass;
-                URL url = new URL(wsite);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoOutput(true);
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                response = reader.readLine();
-                if (!response.equals("0")) {
+                try {
+                    URL url = new URL(wsite);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setDoOutput(true);
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    response = reader.readLine();
+                    if(response.equals("n")) {
+                        loading.dismiss();
+                        Toast.makeText(this, "Account has yet to be authenticated from registered Email id", Toast.LENGTH_SHORT).show();
+                    }else if (!response.equals("0")) {
+                            loading.dismiss();
+                            Intent i = new Intent(MainActivity.this, Main2Activity.class);
+                            i.putExtra("ID", response + emp);
+                            ed1.setText("");
+                            ed2.setText("");
+                            startActivity(i);
+                    }else {
+                        loading.dismiss();
+                        Toast.makeText(this, "Incorrect Employee ID or Password", Toast.LENGTH_SHORT).show();
+                    }
+                }catch(IOException e){
                     loading.dismiss();
-                    Intent i = new Intent(MainActivity.this, Main2Activity.class);
-                    i.putExtra("ID", response + emp);
-                    ed1.setText("");
-                    ed2.setText("");
-                    loading.dismiss();
-                    startActivity(i);
-                }else{
-                    Toast.makeText(this, "Incorrect Employee ID or Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Issue with internet!", Toast.LENGTH_SHORT).show();
                 }
             }
         }else{

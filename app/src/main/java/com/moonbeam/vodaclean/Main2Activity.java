@@ -61,7 +61,7 @@ public class Main2Activity extends AppCompatActivity {
     private String KEY_IMAGE = "image";
     private String KEY_DISC = "disc";
     private String KEY_LOC="location";
-    String[] SPINNERLIST = {"Desk not clean:", "Washroom not clean:", "Pantry no clean:", "Carpet no clean:","Cafeteria not clean:","Dustbin not clean:"};
+    String[] SPINNERLIST = {"Desk not clean:", "Washroom not clean:", "Pantry not clean:", "Carpet not clean:","Cafeteria not clean:","Dustbin not clean:"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

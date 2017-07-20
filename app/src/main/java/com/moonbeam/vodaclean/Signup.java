@@ -35,8 +35,8 @@ import java.net.URLEncoder;
 import java.net.UnknownHostException;
 
 public class Signup extends AppCompatActivity {
-    EditText ed1,ed2,ed3,ed4;
-    String emp,name,pass,cpass;
+    EditText ed1,ed2,ed3,ed4,ed5;
+    String emp,name,pass,cpass,mail;
     WebView web;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class Signup extends AppCompatActivity {
         ed2=(EditText)findViewById(R.id.name);
         ed3=(EditText)findViewById(R.id.pass);
         ed4=(EditText)findViewById(R.id.cpass);
+        ed5=(EditText)findViewById(R.id.email);
         web=(WebView)findViewById(R.id.web);
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -55,37 +56,44 @@ public class Signup extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-    public void sign(View v) throws IOException {
+    public void sign(View v) {
         emp=ed1.getText().toString();
         name=ed2.getText().toString();
         pass=ed3.getText().toString();
         cpass=ed4.getText().toString();
+        mail=ed5.getText().toString();
         if (isInternetAvailable()){
-            if(emp.equals("")||pass.equals("")||name.equals("")||cpass.equals(""))
+            if(emp.equals("")||pass.equals("")||name.equals("")||cpass.equals("")||mail.equals(""))
                 Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show();
             else {
                 if (pass.equals(cpass)) {
-                    emp = URLEncoder.encode(emp, "UTF-8");
-                    pass = URLEncoder.encode(pass, "UTF-8");
-                    name = URLEncoder.encode(name, "UTF-8");
+                    emp = URLEncoder.encode(emp);
+                    pass = URLEncoder.encode(pass);
+                    name = URLEncoder.encode(name);
                     final ProgressDialog loading = ProgressDialog.show(this,"Signing Up...","Please wait...",false,false);
                     String response = "0";
                     String wsite = "http://vodacleanserver3893.000webhostapp.com/signup.php?read=1&emp=" + emp;
-                    URL url = new URL(wsite);
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("POST");
-                    urlConnection.setDoOutput(true);
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                    response = reader.readLine();
-                    if (response.equals("0")) {
-                        web.loadUrl("http://vodacleanserver3893.000webhostapp.com/signup.php?read=0&emp=" + emp + "&pass=" + pass);
+                    try {
+                        URL url = new URL(wsite);
+                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setRequestMethod("POST");
+                        urlConnection.setDoOutput(true);
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                        response = reader.readLine();
+                        if (response.equals("0")) {
+                            loading.dismiss();
+                            web.loadUrl("http://vodacleanserver3893.000webhostapp.com/signup.php?read=0&emp=" + emp + "&pass=" + pass+"&mail="+mail);
+                            Intent i = new Intent(Signup.this, MainActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(i);
+                        } else {
+                            loading.dismiss();
+                            Toast.makeText(Signup.this, "Employee ID already in use", Toast.LENGTH_LONG).show();
+                        }
+                    }catch(IOException e){
                         loading.dismiss();
-                        Intent i = new Intent(Signup.this, MainActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(i);
-                    } else {
-                        Toast.makeText(Signup.this, "Employee ID already in use", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Issue with internet!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show();
