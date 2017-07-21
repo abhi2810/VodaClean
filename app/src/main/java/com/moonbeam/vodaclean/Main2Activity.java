@@ -36,6 +36,7 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
@@ -166,7 +167,17 @@ public class Main2Activity extends AppCompatActivity {
                         loading.dismiss();
 
                         //Showing toast
-                        Toast.makeText(Main2Activity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                        if(volleyError.getMessage()!=null)
+                            Toast.makeText(Main2Activity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                        else{
+                            disc.setText("");
+                            city.setText("");
+                            loc.setText("");
+                            floor.setText("");
+                            materialDesignSpinner.setText("");
+                            imageView.setImageResource(0);
+                            Toast.makeText(Main2Activity.this, "Succesfully Submitted!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }){
             @Override
