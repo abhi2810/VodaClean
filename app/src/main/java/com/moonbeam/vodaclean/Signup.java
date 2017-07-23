@@ -66,39 +66,43 @@ public class Signup extends AppCompatActivity {
             if(emp.equals("")||pass.equals("")||name.equals("")||cpass.equals("")||mail.equals(""))
                 Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show();
             else {
-                if (pass.equals(cpass)) {
-                    emp = URLEncoder.encode(emp);
-                    pass = URLEncoder.encode(pass);
-                    name = URLEncoder.encode(name);
-                    final ProgressDialog loading = ProgressDialog.show(this,"Signing Up...","Please wait...",false,false);
-                    String response = "0";
-                    String wsite = "http://vodacleanserver3893.000webhostapp.com/signup.php?read=1&emp=" + emp;
-                    try {
-                        URL url = new URL(wsite);
-                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                        urlConnection.setRequestMethod("POST");
-                        urlConnection.setDoOutput(true);
-                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                        response = reader.readLine();
-                        if (response.equals("0")) {
+                if(isValidEmail(mail)&& mail.endsWith("@vodafone.com")) {
+                    if (pass.equals(cpass)) {
+                        emp = URLEncoder.encode(emp);
+                        pass = URLEncoder.encode(pass);
+                        name = URLEncoder.encode(name);
+                        final ProgressDialog loading = ProgressDialog.show(this, "Signing Up...", "Please wait...", false, false);
+                        String response = "0";
+                        String wsite = "http://vodacleanserver3893.000webhostapp.com/signup.php?read=1&emp=" + emp;
+                        try {
+                            URL url = new URL(wsite);
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            urlConnection.setRequestMethod("POST");
+                            urlConnection.setDoOutput(true);
+                            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                            response = reader.readLine();
+                            if (response.equals("0")) {
+                                loading.dismiss();
+                                web.loadUrl("http://vodacleanserver3893.000webhostapp.com/signup.php?read=0&emp=" + emp + "&pass=" + pass + "&mail=" + mail);
+                                Intent i = new Intent(Signup.this, MainActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
+                            } else {
+                                loading.dismiss();
+                                Toast.makeText(Signup.this, "Employee ID already in use", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (IOException e) {
                             loading.dismiss();
-                            web.loadUrl("http://vodacleanserver3893.000webhostapp.com/signup.php?read=0&emp=" + emp + "&pass=" + pass+"&mail="+mail);
-                            Intent i = new Intent(Signup.this, MainActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(i);
-                        } else {
-                            loading.dismiss();
-                            Toast.makeText(Signup.this, "Employee ID already in use", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Issue with internet!", Toast.LENGTH_SHORT).show();
                         }
-                    }catch(IOException e){
-                        loading.dismiss();
-                        Toast.makeText(this, "Issue with internet!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show();
+                        ed3.setText("");
+                        ed4.setText("");
                     }
-                } else {
-                    Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show();
-                    ed3.setText("");
-                    ed4.setText("");
+                }else{
+                    Toast.makeText(this, "Invalid Email Id, Please enter a valid Vodafone Email ID.", Toast.LENGTH_SHORT).show();
                 }
             }
         }else{
@@ -112,7 +116,13 @@ public class Signup extends AppCompatActivity {
         } catch (UnknownHostException e) {}
         return false;
     }
-
+    public final static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater om=getMenuInflater();
