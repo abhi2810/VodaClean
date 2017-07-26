@@ -28,7 +28,7 @@
         android:id="@+id/android_material_design_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Type of Issue"
+        android:hint="Type of Issue related to Hygiene"
         android:textColorHint="#bf0000"
         app:met_floatingLabel="normal" />
 <android.support.design.widget.TextInputLayout
@@ -36,7 +36,7 @@
     android:layout_height="wrap_content">
     <EditText
         android:id="@+id/editText"
-        android:hint="Discription of Issue"
+        android:hint="Description of Issue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </android.support.design.widget.TextInputLayout>

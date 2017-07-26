@@ -1,6 +1,8 @@
 package com.moonbeam.vodaclean;
 
+import android.Manifest;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +10,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, 10);
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, "Account has yet to be authenticated from registered Email id", Toast.LENGTH_SHORT).show();
                     }else if (!response.equals("0")) {
                             loading.dismiss();
-                            Intent i = new Intent(MainActivity.this, Main2Activity.class);
+                            Intent i = new Intent(MainActivity.this, MainMenu.class);
                             i.putExtra("ID", response + emp);
                             ed1.setText("");
                             ed2.setText("");

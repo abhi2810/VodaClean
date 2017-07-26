@@ -34,6 +34,19 @@
         <activity
             android:name=".ResetPassword"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MainMenu"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Transport"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".BCM"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".HSW"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Others"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

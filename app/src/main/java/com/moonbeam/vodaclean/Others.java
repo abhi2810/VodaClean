@@ -1,5 +1,6 @@
 package com.moonbeam.vodaclean;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,7 +43,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class Main2Activity extends AppCompatActivity {
+public class Others extends AppCompatActivity {
     private FloatingActionButton buttonChoose;
     private FloatingActionButton buttonUpload;
 
@@ -52,7 +53,6 @@ public class Main2Activity extends AppCompatActivity {
     private EditText city;
     private EditText loc;
     private EditText floor;
-    private MaterialBetterSpinner materialDesignSpinner;
     private Bitmap bitmap;
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -62,17 +62,10 @@ public class Main2Activity extends AppCompatActivity {
     private String KEY_IMAGE = "image";
     private String KEY_DISC = "disc";
     private String KEY_LOC="location";
-    String[] SPINNERLIST = {"Desk not clean:", "Washroom not clean:", "Pantry not clean:", "Carpet not clean:","Cafeteria not clean:","Dustbin not clean:"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
-        materialDesignSpinner = (MaterialBetterSpinner)
-                findViewById(R.id.android_material_design_spinner);
-        materialDesignSpinner.setAdapter(arrayAdapter);
+        setContentView(R.layout.activity_others);
         buttonChoose = (FloatingActionButton) findViewById(R.id.buttonChoose);
         buttonUpload = (FloatingActionButton) findViewById(R.id.buttonUpload);
         View view = this.getCurrentFocus();
@@ -96,8 +89,8 @@ public class Main2Activity extends AppCompatActivity {
         buttonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(disc.getText().toString().equals("")||city.getText().toString().equals("")||floor.getText().toString().equals("")||loc.getText().toString().equals("")||materialDesignSpinner.getText().toString().equals("")) {
-                    Toast.makeText(Main2Activity.this, "Fields Can't be empty!", Toast.LENGTH_SHORT).show();
+                if(disc.getText().toString().equals("")||city.getText().toString().equals("")||floor.getText().toString().equals("")||loc.getText().toString().equals("")) {
+                    Toast.makeText(Others.this, "Fields Can't be empty!", Toast.LENGTH_SHORT).show();
                 }else
                     uploadImage();
                 disc.requestFocus();
@@ -151,12 +144,11 @@ public class Main2Activity extends AppCompatActivity {
                         //Disimissing the progress dialog
                         loading.dismiss();
                         //Showing toast message of the response
-                        Toast.makeText(Main2Activity.this, s , Toast.LENGTH_LONG).show();
+                        Toast.makeText(Others.this, s , Toast.LENGTH_LONG).show();
                         disc.setText("");
                         city.setText("");
                         loc.setText("");
                         floor.setText("");
-                        materialDesignSpinner.setText("");
                         imageView.setImageResource(0);
                     }
                 },
@@ -168,15 +160,14 @@ public class Main2Activity extends AppCompatActivity {
 
                         //Showing toast
                         if(volleyError.getMessage()!=null)
-                            Toast.makeText(Main2Activity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(Others.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
                         else{
                             disc.setText("");
                             city.setText("");
                             loc.setText("");
                             floor.setText("");
-                            materialDesignSpinner.setText("");
                             imageView.setImageResource(0);
-                            Toast.makeText(Main2Activity.this, "Succesfully Submitted!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Others.this, "Succesfully Submitted!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }){
@@ -186,8 +177,7 @@ public class Main2Activity extends AppCompatActivity {
                 String image = getStringImage(bitmap);
 
                 //Getting Image Name
-                String topic=materialDesignSpinner.getText().toString();
-                String dis = topic+"\n"+disc.getText().toString().trim();
+                String dis =disc.getText().toString().trim();
                 String loca=city.getText().toString()+", "+loc.getText().toString().trim()+", "+floor.getText().toString().trim();
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -201,7 +191,7 @@ public class Main2Activity extends AppCompatActivity {
                 params.put(KEY_DISC, dis);
                 params.put(KEY_LOC,loca);
                 params.put("date",time);
-                params.put("Type","Hygiene");
+                params.put("Type","Others");
                 //returning parameter
                 return params;
             }
@@ -227,14 +217,14 @@ public class Main2Activity extends AppCompatActivity {
             case R.id.item1:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setTitle("Powered by-");
-                LayoutInflater factory = LayoutInflater.from(Main2Activity.this);
+                LayoutInflater factory = LayoutInflater.from(Others.this);
                 final View view = factory.inflate(R.layout.dialog_main, null);
 
                 dialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(Main2Activity.this,"Thanks",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Others.this,"Thanks",Toast.LENGTH_SHORT).show();
                             }
                         });
                 dialog.setView(view);
@@ -253,8 +243,8 @@ public class Main2Activity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(Main2Activity.this, "Logged Out", Toast.LENGTH_SHORT).show();
-                                Intent i=new Intent(Main2Activity.this,MainActivity.class);
+                                Toast.makeText(Others.this, "Logged Out", Toast.LENGTH_SHORT).show();
+                                Intent i=new Intent(Others.this,MainActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

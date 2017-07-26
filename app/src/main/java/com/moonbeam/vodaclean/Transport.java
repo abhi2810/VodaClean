@@ -1,5 +1,6 @@
 package com.moonbeam.vodaclean;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,7 +43,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class Main2Activity extends AppCompatActivity {
+public class Transport extends AppCompatActivity {
     private FloatingActionButton buttonChoose;
     private FloatingActionButton buttonUpload;
 
@@ -62,11 +63,11 @@ public class Main2Activity extends AppCompatActivity {
     private String KEY_IMAGE = "image";
     private String KEY_DISC = "disc";
     private String KEY_LOC="location";
-    String[] SPINNERLIST = {"Desk not clean:", "Washroom not clean:", "Pantry not clean:", "Carpet not clean:","Cafeteria not clean:","Dustbin not clean:"};
+    String[] SPINNERLIST = {"Drink and drive:", "Rash driving:", "Cab not available for drop:", "Delay in Pickup:","Driver related issues:"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_transport);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
@@ -97,7 +98,7 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(disc.getText().toString().equals("")||city.getText().toString().equals("")||floor.getText().toString().equals("")||loc.getText().toString().equals("")||materialDesignSpinner.getText().toString().equals("")) {
-                    Toast.makeText(Main2Activity.this, "Fields Can't be empty!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Transport.this, "Fields Can't be empty!", Toast.LENGTH_SHORT).show();
                 }else
                     uploadImage();
                 disc.requestFocus();
@@ -151,7 +152,7 @@ public class Main2Activity extends AppCompatActivity {
                         //Disimissing the progress dialog
                         loading.dismiss();
                         //Showing toast message of the response
-                        Toast.makeText(Main2Activity.this, s , Toast.LENGTH_LONG).show();
+                        Toast.makeText(Transport.this, s , Toast.LENGTH_LONG).show();
                         disc.setText("");
                         city.setText("");
                         loc.setText("");
@@ -168,7 +169,7 @@ public class Main2Activity extends AppCompatActivity {
 
                         //Showing toast
                         if(volleyError.getMessage()!=null)
-                            Toast.makeText(Main2Activity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(Transport.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
                         else{
                             disc.setText("");
                             city.setText("");
@@ -176,7 +177,7 @@ public class Main2Activity extends AppCompatActivity {
                             floor.setText("");
                             materialDesignSpinner.setText("");
                             imageView.setImageResource(0);
-                            Toast.makeText(Main2Activity.this, "Succesfully Submitted!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Transport.this, "Succesfully Submitted!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }){
@@ -201,7 +202,7 @@ public class Main2Activity extends AppCompatActivity {
                 params.put(KEY_DISC, dis);
                 params.put(KEY_LOC,loca);
                 params.put("date",time);
-                params.put("Type","Hygiene");
+                params.put("Type","Transport");
                 //returning parameter
                 return params;
             }
@@ -227,14 +228,14 @@ public class Main2Activity extends AppCompatActivity {
             case R.id.item1:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setTitle("Powered by-");
-                LayoutInflater factory = LayoutInflater.from(Main2Activity.this);
+                LayoutInflater factory = LayoutInflater.from(Transport.this);
                 final View view = factory.inflate(R.layout.dialog_main, null);
 
                 dialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(Main2Activity.this,"Thanks",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Transport.this,"Thanks",Toast.LENGTH_SHORT).show();
                             }
                         });
                 dialog.setView(view);
@@ -253,8 +254,8 @@ public class Main2Activity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(Main2Activity.this, "Logged Out", Toast.LENGTH_SHORT).show();
-                                Intent i=new Intent(Main2Activity.this,MainActivity.class);
+                                Toast.makeText(Transport.this, "Logged Out", Toast.LENGTH_SHORT).show();
+                                Intent i=new Intent(Transport.this,MainActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
