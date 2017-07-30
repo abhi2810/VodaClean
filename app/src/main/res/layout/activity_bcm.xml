@@ -40,33 +40,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/editText1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/editText1"
-                android:hint="Location(City)"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+            android:layout_height="wrap_content"
+            android:hint="Location(CITY)"
+            android:textColorHint="#bf0000"
+            app:met_floatingLabel="normal" />
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/editText2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/editText2"
-                android:hint="Location(Building)"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+            android:layout_height="wrap_content"
+            android:hint="Location(Building)"
+            android:textColorHint="#bf0000"
+            app:met_floatingLabel="normal" />
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/editText3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/editText3"
-                android:hint="Location(Floor)"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:hint="Location(Floor)"
+            android:textColorHint="#bf0000"
+            app:met_floatingLabel="normal" />
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/buttonUpload"
             android:layout_width="wrap_content"

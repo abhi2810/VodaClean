@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -56,7 +57,7 @@ public class Main2Activity extends AppCompatActivity {
     private MaterialBetterSpinner floor;
     private MaterialBetterSpinner materialDesignSpinner;
     private Bitmap bitmap;
-
+    SharedPreferences sp;
     private int PICK_IMAGE_REQUEST = 1;
 
     private String UPLOAD_URL ="http://vodacleanserver3893.000webhostapp.com/picture.php";
@@ -80,7 +81,7 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
+        sp=getSharedPreferences("login",Context.MODE_PRIVATE);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
         ArrayAdapter<String> ci = new ArrayAdapter<String>(this,
@@ -91,15 +92,15 @@ public class Main2Activity extends AppCompatActivity {
                 android.R.layout.simple_dropdown_item_1line, Bangalore);
         final ArrayAdapter<String> aham = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, Ahamdabad);
-        ArrayAdapter<String> man = new ArrayAdapter<String>(this,
+        final ArrayAdapter<String> man = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, Mantri);
-        ArrayAdapter<String> eo = new ArrayAdapter<String>(this,
+        final ArrayAdapter<String> eo = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, EON);
-        ArrayAdapter<String> pt = new ArrayAdapter<String>(this,
+        final ArrayAdapter<String> pt = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, PTP);
-        ArrayAdapter<String> gt = new ArrayAdapter<String>(this,
+        final ArrayAdapter<String> gt = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, GTP);
-        ArrayAdapter<String> vo = new ArrayAdapter<String>(this,
+        final ArrayAdapter<String> vo = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, Voda);
         ArrayAdapter<String> n1 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, nu);
@@ -127,6 +128,7 @@ public class Main2Activity extends AppCompatActivity {
         city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                loc.setText("");
                 String c=city.getText().toString();
                 if(c.equals("Pune"))
                     loc.setAdapter(pu);
@@ -134,7 +136,26 @@ public class Main2Activity extends AppCompatActivity {
                     loc.setAdapter(ban);
                 else if(c.equals("Ahamdabad"))
                     loc.setAdapter(aham);
+                floor.setText("");
                 floor.setAdapter(n2);
+            }
+        });
+        loc.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                floor.setText("");
+                String lo=loc.getText().toString();
+                if(lo.equals("Mantri"))
+                    floor.setAdapter(man);
+                else if(lo.equals("EON"))
+                    floor.setAdapter(eo);
+                else if(lo.equals("GTP"))
+                    floor.setAdapter(gt);
+                else if(lo.equals("PTP"))
+                    floor.setAdapter(pt);
+                else if(lo.equals("Vodafone house"))
+                    floor.setAdapter(vo);
+
             }
         });
         buttonChoose.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +273,7 @@ public class Main2Activity extends AppCompatActivity {
                 params.put(KEY_LOC,loca);
                 params.put("date",time);
                 params.put("Type","Hygiene");
+                params.put("emp",sp.getString("log",null));
                 //returning parameter
                 return params;
             }
@@ -268,6 +290,8 @@ public class Main2Activity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater om=getMenuInflater();
         om.inflate(R.menu.main2,menu);
+        MenuItem im=menu.findItem(R.id.item0);
+        im.setTitle("Logged in as: "+sp.getString("log",null));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -304,6 +328,7 @@ public class Main2Activity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
                                 Toast.makeText(Main2Activity.this, "Logged Out", Toast.LENGTH_SHORT).show();
+                                sp.edit().clear().commit();
                                 Intent i=new Intent(Main2Activity.this,MainActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

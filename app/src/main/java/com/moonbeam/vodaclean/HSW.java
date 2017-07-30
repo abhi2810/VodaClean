@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,27 +52,60 @@ public class HSW extends AppCompatActivity {
     private ImageView imageView;
 
     private EditText disc;
-    private EditText city;
-    private EditText loc;
-    private EditText floor;
+    private MaterialBetterSpinner city;
+    private MaterialBetterSpinner loc;
+    private MaterialBetterSpinner floor;
     private MaterialBetterSpinner materialDesignSpinner;
     private Bitmap bitmap;
 
     private int PICK_IMAGE_REQUEST = 1;
-
+    SharedPreferences sp;
     private String UPLOAD_URL ="http://vodacleanserver3893.000webhostapp.com/picture.php";
 
     private String KEY_IMAGE = "image";
     private String KEY_DISC = "disc";
     private String KEY_LOC="location";
     String[] SPINNERLIST = {"Dangerous working condition:", "Incident report:", "Medical emergency:"};
+    String[] cit={"Ahamdabad","Bangalore","Pune"};
+    String[] Pune={"Mantri","EON"};
+    String[] Bangalore={"GTP","PTP"};
+    String[] Ahamdabad={"Vodafone house"};
+    String[] Mantri={"3A","3B","4A","4B"};
+    String[] EON={"Cluster D 1st","Cluster D 2nd","Cluster D 3rd","Cluster B 1st"};
+    String[] GTP={"9A","10A","10B"};
+    String[] PTP={"5th Floor"};
+    String[] Voda={"Building A 1st","Building A 2nd","Building A 3rd","Building A 4th","Building B 1st","Building B 2nd","Building B 3rd","Building B 4th","Building B 5th","Building B 6th","Building B 7th","Building B 8th","Building B 9th","Building B 10th"};
+    String[] nu={"Select a city"};
+    String[] nul={"Select a building"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hsw);
-
+        sp=getSharedPreferences("login",Context.MODE_PRIVATE);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
+        ArrayAdapter<String> ci = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, cit);
+        final ArrayAdapter<String> pu = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Pune);
+        final ArrayAdapter<String> ban = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Bangalore);
+        final ArrayAdapter<String> aham = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Ahamdabad);
+        final ArrayAdapter<String> man = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Mantri);
+        final ArrayAdapter<String> eo = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, EON);
+        final ArrayAdapter<String> pt = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, PTP);
+        final ArrayAdapter<String> gt = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, GTP);
+        final ArrayAdapter<String> vo = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Voda);
+        ArrayAdapter<String> n1 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, nu);
+        final ArrayAdapter<String> n2 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, nul);
         materialDesignSpinner = (MaterialBetterSpinner)
                 findViewById(R.id.android_material_design_spinner);
         materialDesignSpinner.setAdapter(arrayAdapter);
@@ -82,12 +117,47 @@ public class HSW extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         disc = (EditText) findViewById(R.id.editText);
-        city = (EditText) findViewById(R.id.editText1);
-        loc = (EditText) findViewById(R.id.editText2);
-        floor=(EditText) findViewById(R.id.editText3);
+        city = (MaterialBetterSpinner) findViewById(R.id.editText1);
+        loc = (MaterialBetterSpinner) findViewById(R.id.editText2);
+        floor=(MaterialBetterSpinner) findViewById(R.id.editText3);
 
         imageView  = (ImageView) findViewById(R.id.imageView);
+        city.setAdapter(ci);
+        loc.setAdapter(n1);
+        floor.setAdapter(n2);
+        city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                loc.setText("");
+                String c=city.getText().toString();
+                if(c.equals("Pune"))
+                    loc.setAdapter(pu);
+                else if(c.equals("Bangalore"))
+                    loc.setAdapter(ban);
+                else if(c.equals("Ahamdabad"))
+                    loc.setAdapter(aham);
+                floor.setText("");
+                floor.setAdapter(n2);
+            }
+        });
+        loc.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                floor.setText("");
+                String lo=loc.getText().toString();
+                if(lo.equals("Mantri"))
+                    floor.setAdapter(man);
+                else if(lo.equals("EON"))
+                    floor.setAdapter(eo);
+                else if(lo.equals("GTP"))
+                    floor.setAdapter(gt);
+                else if(lo.equals("PTP"))
+                    floor.setAdapter(pt);
+                else if(lo.equals("Vodafone house"))
+                    floor.setAdapter(vo);
 
+            }
+        });
         buttonChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -203,6 +273,7 @@ public class HSW extends AppCompatActivity {
                 params.put(KEY_LOC,loca);
                 params.put("date",time);
                 params.put("Type","HSW");
+                params.put("emp",sp.getString("log",null));
                 //returning parameter
                 return params;
             }
@@ -219,6 +290,8 @@ public class HSW extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater om=getMenuInflater();
         om.inflate(R.menu.main2,menu);
+        MenuItem im=menu.findItem(R.id.item0);
+        im.setTitle("Logged in as: "+sp.getString("log",null));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -254,6 +327,7 @@ public class HSW extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
+                                sp.edit().clear().commit();
                                 Toast.makeText(HSW.this, "Logged Out", Toast.LENGTH_SHORT).show();
                                 Intent i=new Intent(HSW.this,MainActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

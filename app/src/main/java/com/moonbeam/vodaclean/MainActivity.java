@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -40,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
     String emp,pass;
     boolean doubleBackToExitPressedOnce=false;
     TextView rpass;
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sp=getSharedPreferences("login",Context.MODE_PRIVATE);
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
@@ -72,41 +75,42 @@ public class MainActivity extends AppCompatActivity {
         emp=ed1.getText().toString();
         pass=ed2.getText().toString();
         if (isInternetAvailable()){
-            if(emp.equals("")||pass.equals(""))
-                Toast.makeText(this, "EmployeeID or Password can't be empty", Toast.LENGTH_SHORT).show();
-            else{
-                final ProgressDialog loading = ProgressDialog.show(this,"Logging in...","Please wait...",false,false);
-                pass= URLEncoder.encode(pass);
-                emp=URLEncoder.encode(emp);
-                String response = "0";
-                String wsite = "http://vodacleanserver3893.000webhostapp.com/login.php?emp=" + emp + "&pass=" + pass;
-                try {
-                    URL url = new URL(wsite);
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("POST");
-                    urlConnection.setDoOutput(true);
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                    response = reader.readLine();
-                    if(response.equals("n")) {
-                        loading.dismiss();
-                        Toast.makeText(this, "Account has yet to be authenticated from registered Email id", Toast.LENGTH_SHORT).show();
-                    }else if (!response.equals("0")) {
+                if (emp.equals("") || pass.equals(""))
+                    Toast.makeText(this, "EmployeeID or Password can't be empty", Toast.LENGTH_SHORT).show();
+                else {
+                    final ProgressDialog loading = ProgressDialog.show(this, "Logging in...", "Please wait...", false, false);
+                    pass = URLEncoder.encode(pass);
+                    emp = URLEncoder.encode(emp);
+                    String response = "0";
+                    String wsite = "http://vodacleanserver3893.000webhostapp.com/login.php?emp=" + emp + "&pass=" + pass;
+                    try {
+                        URL url = new URL(wsite);
+                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setRequestMethod("POST");
+                        urlConnection.setDoOutput(true);
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                        response = reader.readLine();
+                        if (response.equals("n")) {
                             loading.dismiss();
+                            Toast.makeText(this, "Account has yet to be authenticated from registered Email id", Toast.LENGTH_SHORT).show();
+                        } else if (!response.equals("0")) {
+                            loading.dismiss();
+                            sp.edit().putString("log",emp).commit();
                             Intent i = new Intent(MainActivity.this, MainMenu.class);
                             i.putExtra("ID", response + emp);
                             ed1.setText("");
                             ed2.setText("");
                             startActivity(i);
-                    }else {
+                        } else {
+                            loading.dismiss();
+                            Toast.makeText(this, "Incorrect Employee ID or Password", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
                         loading.dismiss();
-                        Toast.makeText(this, "Incorrect Employee ID or Password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Issue with internet!", Toast.LENGTH_SHORT).show();
                     }
-                }catch(IOException e){
-                    loading.dismiss();
-                    Toast.makeText(this, "Issue with internet!", Toast.LENGTH_SHORT).show();
                 }
-            }
         }else{
             Toast.makeText(MainActivity.this,"Internet not Connected",Toast.LENGTH_LONG).show();
         }
