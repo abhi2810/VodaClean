@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 public class Main2Activity extends AppCompatActivity {
@@ -49,9 +51,9 @@ public class Main2Activity extends AppCompatActivity {
     private ImageView imageView;
 
     private EditText disc;
-    private EditText city;
-    private EditText loc;
-    private EditText floor;
+    private MaterialBetterSpinner city;
+    private MaterialBetterSpinner loc;
+    private MaterialBetterSpinner floor;
     private MaterialBetterSpinner materialDesignSpinner;
     private Bitmap bitmap;
 
@@ -63,6 +65,17 @@ public class Main2Activity extends AppCompatActivity {
     private String KEY_DISC = "disc";
     private String KEY_LOC="location";
     String[] SPINNERLIST = {"Desk not clean:", "Washroom not clean:", "Pantry not clean:", "Carpet not clean:","Cafeteria not clean:","Dustbin not clean:"};
+    String[] cit={"Ahamdabad","Bangalore","Pune"};
+    String[] Pune={"Mantri","EON"};
+    String[] Bangalore={"GTP","PTP"};
+    String[] Ahamdabad={"Vodafone house"};
+    String[] Mantri={"3A","3B","4A","4B"};
+    String[] EON={"Cluster D 1st","Cluster D 2nd","Cluster D 3rd","Cluster B 1st"};
+    String[] GTP={"9A","10A","10B"};
+    String[] PTP={"5th Floor"};
+    String[] Voda={"Building A 1st","Building A 2nd","Building A 3rd","Building A 4th","Building B 1st","Building B 2nd","Building B 3rd","Building B 4th","Building B 5th","Building B 6th","Building B 7th","Building B 8th","Building B 9th","Building B 10th"};
+    String[] nu={"Select a city"};
+    String[] nul={"Select a building"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +83,28 @@ public class Main2Activity extends AppCompatActivity {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
+        ArrayAdapter<String> ci = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, cit);
+        final ArrayAdapter<String> pu = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Pune);
+        final ArrayAdapter<String> ban = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Bangalore);
+        final ArrayAdapter<String> aham = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Ahamdabad);
+        ArrayAdapter<String> man = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Mantri);
+        ArrayAdapter<String> eo = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, EON);
+        ArrayAdapter<String> pt = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, PTP);
+        ArrayAdapter<String> gt = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, GTP);
+        ArrayAdapter<String> vo = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Voda);
+        ArrayAdapter<String> n1 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, nu);
+        final ArrayAdapter<String> n2 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, nul);
         materialDesignSpinner = (MaterialBetterSpinner)
                 findViewById(R.id.android_material_design_spinner);
         materialDesignSpinner.setAdapter(arrayAdapter);
@@ -81,12 +116,27 @@ public class Main2Activity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         disc = (EditText) findViewById(R.id.editText);
-        city = (EditText) findViewById(R.id.editText1);
-        loc = (EditText) findViewById(R.id.editText2);
-        floor=(EditText) findViewById(R.id.editText3);
+        city = (MaterialBetterSpinner) findViewById(R.id.editText1);
+        loc = (MaterialBetterSpinner) findViewById(R.id.editText2);
+        floor=(MaterialBetterSpinner) findViewById(R.id.editText3);
 
         imageView  = (ImageView) findViewById(R.id.imageView);
-
+        city.setAdapter(ci);
+        loc.setAdapter(n1);
+        floor.setAdapter(n2);
+        city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String c=city.getText().toString();
+                if(c.equals("Pune"))
+                    loc.setAdapter(pu);
+                else if(c.equals("Bangalore"))
+                    loc.setAdapter(ban);
+                else if(c.equals("Ahamdabad"))
+                    loc.setAdapter(aham);
+                floor.setAdapter(n2);
+            }
+        });
         buttonChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
