@@ -291,7 +291,7 @@ public class Main2Activity extends AppCompatActivity {
         MenuInflater om=getMenuInflater();
         om.inflate(R.menu.main2,menu);
         MenuItem im=menu.findItem(R.id.item0);
-        im.setTitle("Logged in as: "+sp.getString("log",null));
+        im.setTitle(sp.getString("log",null));
         return super.onCreateOptionsMenu(menu);
     }
 

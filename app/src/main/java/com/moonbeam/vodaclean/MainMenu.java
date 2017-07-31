@@ -50,7 +50,10 @@ public class MainMenu extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            finish();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
             moveTaskToBack(true);
             return;
         }
@@ -71,7 +74,7 @@ public class MainMenu extends AppCompatActivity {
         MenuInflater om=getMenuInflater();
         om.inflate(R.menu.main2,menu);
         MenuItem im=menu.findItem(R.id.item0);
-        im.setTitle("Logged in as: "+sp.getString("log",null));
+        im.setTitle(sp.getString("log",null));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -93,12 +96,6 @@ public class MainMenu extends AppCompatActivity {
                         });
                 dialog.setView(view);
                 dialog.show();
-                break;
-            case R.id.item2:
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("EXIT", true);
-                startActivity(intent);
                 break;
             case R.id.action_settings:
                 AlertDialog.Builder dial = new AlertDialog.Builder(this);
