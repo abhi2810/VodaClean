@@ -10,7 +10,7 @@
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        app:srcCompat="@mipmap/icon"
+        app:srcCompat="@drawable/logo"
         android:contentDescription="LOGO" />
     <TextView
         android:layout_width="wrap_content"
